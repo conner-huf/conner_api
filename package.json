@@ -1,0 +1,10 @@
+{
+  "name": "conner_api",
+  "version": "1.0.0",
+  "scripts": {
+    "start": "bash scripts/start.sh"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
