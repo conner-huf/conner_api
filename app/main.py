@@ -2,7 +2,7 @@ from fastapi import FastAPI, Depends
 from fastapi.responses import JSONResponse
 from fastapi.middleware.cors import CORSMiddleware
 
-from app.routes import resume_api, noodle_api
+from app.routes import resume_api, noodle_api, trade_scrape_api
 
 app = FastAPI(
   title="Unified Backend API",
@@ -20,6 +20,7 @@ app.add_middleware(
 
 app.include_router(resume_api.router, prefix="/resume", tags=["Resume site"])
 app.include_router(noodle_api.router, prefix="/noodle", tags=["Noodle"])
+app.include_router(trade_scrape_api.router, prefix="/trades", tags=["Trade scrape"])
 
 @app.get("/")
 async def root():
@@ -27,6 +28,7 @@ async def root():
     "welcome": "Welcome to the Unified Backend ConnerAPI! This API is a single location to serve all of the API needs of my personal projects.",
     "valid routes": {
       "/resume": "API for accessing my resume",
-      "/noodle": "Noodle Backend"
+      "/noodle": "Noodle Backend",
+      "/trades": "API for scraping trade data for representatives in congress"
     }
   }
