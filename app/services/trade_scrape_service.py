@@ -2,7 +2,7 @@ import requests
 from bs4 import BeautifulSoup
 from datetime import datetime
 
-from app.models.trade import Trade
+from app.models.trade_scrape.trade import Trade
 
 class TradeScrapeService:
     

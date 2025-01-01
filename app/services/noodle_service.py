@@ -9,13 +9,13 @@ class NoodleService:
   @staticmethod
   def get_ticketmaster_api_key():
     # Fetch Ticketmaster API Key from environment variables
-    return os.getenv('TICKETMASTER_API_KEY')
+    return config.TICKETMASTER_API_KEY
   
   @staticmethod
   def get_spotify_credentials():
     # Fetch Spotify client ID and secret from environment variables
-    client_id = os.getenv('SPOTIFY_CLIENT_ID')
-    client_secret = os.getenv('SPOTIFY_CLIENT_SECRET')
+    client_id = config.SPOTIFY_CLIENT_ID
+    client_secret = config.SPOTIFY_CLIENT_SECRET
     if not client_id or not client_secret:
       raise ValueError("Spotify credentials are missing in environment variables.")
     return client_id, client_secret
