@@ -1,11 +1,20 @@
 import requests
+from bson import ObjectId
 from app.config import config
+from app.data.db import red_ribbon_db as db
 
 class RedRibbonService:
-
+    
     @staticmethod
-    async def test(user_id: int) -> dict:
+    async def get_wishlist_by_user(user_id: str) -> dict:
         try:
-            return {"message": f"gifts for user {user_id} fetched"}
+            object_id = ObjectId(user_id)
+
+            users = db.Users
+            user = await users.find_one({"_id": object_id})
+            if user:
+                return user.get("wishlist", [])
+            else:
+                return {"error": f"user {user_id} not found"}
         except Exception as e:
             return {"error": str(e)}

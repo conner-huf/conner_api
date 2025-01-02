@@ -15,6 +15,8 @@ This API is written using Python - FastAPI and will be hosted on Azure when comp
   - endpoints for accessing my resume information
 - /noodle 
   - endpoints for my concert venue web application
+- /ribbon
+  - API for accessing gift data for users
 
 #### Starting the server
 
@@ -24,7 +26,7 @@ This API is written using Python - FastAPI and will be hosted on Azure when comp
 #### Architecture
 - app
   - data
-    - This is where referenced data is stored. Holds things like my resume information in a json file
+    - This is where referenced data is stored. ~~Holds things like my resume information in a json file.~~ Holds the mongoDB connection and is referenced by services that need db access.
   - models
     - Place for defining data models for more complicated data structures.
   - routes
@@ -41,3 +43,7 @@ This API is written using Python - FastAPI and will be hosted on Azure when comp
   - This is where I store any scripts I write for convenience's sake.
 - tests
   - Where unit tests are stored and run.
+
+#### Update (1/2/25)
+
+I've added a new portion to this backend, I'm currently calling it Red Ribbon. I want this to serve as a backend data manipulation endpoint for storing wishlists, users, and other data that will support a frontend app for organizing things like secret santa and deciding what gifts to get your loved ones on holidays.
