@@ -2,6 +2,7 @@ from fastapi import APIRouter, HTTPException
 from fastapi.responses import JSONResponse
 
 from app.services.red_ribbon_service import RedRibbonService
+from app.models.red_ribbon import Present
 
 router = APIRouter()
 
@@ -28,3 +29,17 @@ async def get_wishlist(user_id: str):
   if "error" in data:
     raise HTTPException(status_code=404, detail=data["error"])
   return JSONResponse(content=data)
+
+# TODO: Implement route for adding an item to a user's wishlist
+
+# TODO: Implement route for deleting an item from a user's wishlist
+
+# TODO: Implement route for updating an item on a user's wishlist
+
+# TODO: Implement a route for creating a new gift group
+
+# TODO: Implement a route for fetching all members in a gift group
+
+# TODO: Implement a route for adding an existing user to a gift group
+
+# TODO: Implement a route for deleting an existing user from a gift group
