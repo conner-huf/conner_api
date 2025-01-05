@@ -2,7 +2,6 @@ from fastapi import APIRouter, HTTPException
 from fastapi.responses import JSONResponse
 
 from app.services.red_ribbon_service import RedRibbonService
-from app.models.red_ribbon import Present
 
 router = APIRouter()
 

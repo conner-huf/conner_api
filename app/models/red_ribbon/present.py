@@ -1,10 +1,9 @@
-from typing import Optional
 from pydantic import BaseModel
+from datetime import date
 
 class Present(BaseModel):
     title: str
     price: float
-    date_requested: str
+    date_requested: date
     is_purchased: bool
-    date_purchased: Optional[str]
     url: str

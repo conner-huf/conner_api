@@ -1,21 +1,23 @@
+from fastapi.encoders import jsonable_encoder
 import requests
 from bson import ObjectId
 
 from app.config import config
 from app.data.db import red_ribbon_db as db
-from app.models.red_ribbon import Present
+from app.models.red_ribbon.user import User
 
 class RedRibbonService:
+    users = db.Users
     
     @staticmethod
     async def get_user_wishlist(user_id: str) -> dict:
         try:
             object_id = ObjectId(user_id)
-            users = db.Users
 
-            user = await users.find_one({"_id": object_id})
+            user = await RedRibbonService.users.find_one({"_id": object_id})
             if user:
-                return user.get("wishlist", [])
+                user_model = User(**user)
+                return jsonable_encoder(user_model.wishlist)
             else:
                 return {"error": f"user {user_id} not found"}
         except Exception as e:
@@ -25,12 +27,11 @@ class RedRibbonService:
     async def get_user_info(user_id: str) -> dict:
         try:
             object_id = ObjectId(user_id)
-            users = db.Users
 
-            user = await users.find_one({"_id": object_id})
+            user = await RedRibbonService.users.find_one({"_id": object_id})
             if user:
-                user["_id"] = str(user["_id"])
-                return user
+                user_model = User(**user)
+                return jsonable_encoder(user_model)
             else:
                 return {"error": f"user {user_id} not found"}
         except Exception as e:
