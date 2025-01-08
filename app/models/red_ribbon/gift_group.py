@@ -1,6 +1,5 @@
-# TODO: Define the contents of a gift group (Secret Santa, Family Gift Exchange)
 
-from typing import List, Optional
+from typing import List
 from pydantic import BaseModel
 from datetime import date
 

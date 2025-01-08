@@ -1,4 +1,4 @@
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, HTTPException, Header
 from fastapi.responses import JSONResponse
 
 from app.services.red_ribbon_service import RedRibbonService
@@ -29,11 +29,27 @@ async def get_wishlist(user_id: str):
     raise HTTPException(status_code=404, detail=data["error"])
   return JSONResponse(content=data)
 
-# TODO: Implement route for adding an item to a user's wishlist
-
-# TODO: Implement route for deleting an item from a user's wishlist
+@router.post("/user/{user_id}/wishlist")
+async def add_wishlist_item(user_id: str, present_data: dict):
+  data = await RedRibbonService.add_wishlist_item(user_id, present_data)
+  if "error" in data:
+    raise HTTPException(status_code=404, detail=data["error"])
+  return JSONResponse(content=data)
 
 # TODO: Implement route for updating an item on a user's wishlist
+@router.put("/user/{user_id}/wishlist/{present_id}")
+async def update_wishlist_item(user_id: str, present_id: str):
+  data = await RedRibbonService.update_wishlist_item(user_id, present_id)
+  if "error" in data:
+    raise HTTPException(status_code=404, detail=data["error"])
+  return JSONResponse(content=data)
+
+@router.delete("/user/{user_id}/wishlist/{present_id}")
+async def delete_wishlist_item(user_id: str, present_id: str):
+  data = await RedRibbonService.delete_wishlist_item(user_id, present_id)
+  if "error" in data:
+    raise HTTPException(status_code=404, detail=data["error"])
+  return JSONResponse(content=data)
 
 # TODO: Implement a route for creating a new gift group
 
