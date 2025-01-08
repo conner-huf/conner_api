@@ -1,4 +1,4 @@
-from fastapi import APIRouter, HTTPException, Header
+from fastapi import APIRouter, HTTPException
 from fastapi.responses import JSONResponse
 
 from app.services.red_ribbon_service import RedRibbonService
