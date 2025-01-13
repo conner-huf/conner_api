@@ -2,8 +2,11 @@ from fastapi import APIRouter, HTTPException
 from fastapi.responses import JSONResponse
 
 from app.services.red_ribbon_service import RedRibbonService
+from app import auth
 
 router = APIRouter()
+
+router.include_router(auth.router, prefix="/auth", tags=["Authentication"])
 
 @router.get("/", response_model=dict)
 def welcome():
@@ -36,7 +39,6 @@ async def add_wishlist_item(user_id: str, present_data: dict):
     raise HTTPException(status_code=404, detail=data["error"])
   return JSONResponse(content=data)
 
-# TODO: Implement route for updating an item on a user's wishlist
 @router.put("/user/{user_id}/wishlist/{present_id}")
 async def update_wishlist_item(user_id: str, present_id: str):
   data = await RedRibbonService.update_wishlist_item(user_id, present_id)

@@ -1,43 +1,72 @@
-from fastapi import Depends
+from fastapi import APIRouter, Depends, HTTPException
 from fastapi.security import OAuth2AuthorizationCodeBearer
 from google.auth.transport.requests import Request
 from google.oauth2 import id_token
+from pydantic import BaseModel
+from datetime import datetime, timedelta
+from jose import JWTError, jwt
 import requests
 
-# Define OAuth2 configuration for Google
-GOOGLE_CLIENT_ID = "your_google_client_id"
-GOOGLE_CLIENT_SECRET = "your_google_client_secret"
-GOOGLE_DISCOVERY_URL = "https://accounts.google.com/.well-known/openid-configuration"
+from app.config import config
+from app.models.red_ribbon.user import User
+from app.data.db import red_ribbon_db as db
+
+client_id = config.GOOGLE_CLIENT_ID
+client_secret = config.GOOGLE_CLIENT_SECRET
+discovery_url = config.GOOGLE_DISCOVERY_URL
 
 oauth2_scheme_google = OAuth2AuthorizationCodeBearer(
     authorizationUrl="https://accounts.google.com/o/oauth2/auth",
     tokenUrl="https://oauth2.googleapis.com/token",
-    client_id=GOOGLE_CLIENT_ID,
-    client_secret=GOOGLE_CLIENT_SECRET
+    client_id=client_id,
+    client_secret=client_secret
 )
 
-@app.get("/login/google")
+class Token(BaseModel):
+    access_token: str
+    token_type: str
+
+async def create_access_token(data: dict, expires_delta: timedelta = None):
+    to_encode = data.copy()
+    if expires_delta:
+        expire = datetime.now(datetime.timezone.utc) + expires_delta
+    else:
+        expire = datetime.now(datetime.timezone.utc) + timedelta(minutes=15)
+    to_encode.update({"exp": expire})
+    encoded_jwt = jwt.encode(to_encode, config.SECRET_KEY, algorithm=config.ALGORITHM)
+    return encoded_jwt
+
+router = APIRouter()
+
+@router.post("/login/google")
 async def login_google():
     return {"authorization_url": oauth2_scheme_google.authorizationUrl}
 
-@app.get("/auth/google/callback")
+@router.post("/auth/google_callback", response_model=Token)
 async def auth_google_callback(token: str = Depends(oauth2_scheme_google)):
     try:
         # Verify and decode the token
-        idinfo = id_token.verify_oauth2_token(token, Request(), GOOGLE_CLIENT_ID)
+        idinfo = id_token.verify_oauth2_token(token, Request(), client_id)
+        
+        # Extract user information
+        email = idinfo.get("email")
+        name = idinfo.get("name")
         
         # Check if the user exists in your database
-        email = idinfo.get("email")
-        if email not in fake_users_db:
+        user = await db.Users.find_one({"email": email})
+        if not user:
             # Register the user if they don't exist
-            fake_users_db[email] = {"email": email, "hashed_password": ""}
+            user = User(email=email, name=name)
+            await db.Users.insert_one(user.dict())
         
         # Create JWT token for the user
-        access_token_expires = timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
-        access_token = create_access_token(data={"sub": email}, expires_delta=access_token_expires)
+        access_token_expires = timedelta(minutes=config.ACCESS_TOKEN_EXPIRE_MINUTES)
+        access_token = await create_access_token(data={"sub": email}, expires_delta=access_token_expires)
         return {"access_token": access_token, "token_type": "bearer"}
-    except ValueError:
+    except ValueError as e:
         raise HTTPException(status_code=400, detail="Invalid Google token")
+    except Exception as e:
+        raise HTTPException(status_code=500, detail="Internal server error")
     '''
     # TODO: 
 

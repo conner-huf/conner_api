@@ -10,5 +10,13 @@ class Config:
   SPOTIFY_CLIENT_SECRET: str = os.getenv("SPOTIFY_CLIENT_SECRET")
   TICKETMASTER_API_KEY: str = os.getenv("TICKETMASTER_API_KEY")
   TICKETMASTER_SECRET: str = os.getenv("TICKETMASTER_SECRET")
+  GOOGLE_CLIENT_ID: str = os.getenv("your_google_client_id")
+  GOOGLE_CLIENT_SECRET: str = os.getenv("your_google_client_secret")
+  GOOGLE_DISCOVERY_URL: str = os.getenv("https://accounts.google.com/.well-known/openid-configuration")
+  SECRET_KEY: str = os.getenv("SECRET_KEY", "strong secret key for jwt")
+  
+  ALGORITHM = "HS256"
+  ACCESS_TOKEN_EXPIRE_MINUTES = 30
+
 
 config = Config()

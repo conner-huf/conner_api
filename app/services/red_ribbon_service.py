@@ -84,7 +84,6 @@ class RedRibbonService:
         except Exception as e:
             return {"error": str(e)}
 
-    # TODO: Implement a method for updating an item on a user's wish list
     @staticmethod
     async def update_wishlist_item(user_id: str, present_id: str) -> dict:
         try:
