@@ -67,24 +67,24 @@ async def auth_google_callback(token: str = Depends(oauth2_scheme_google)):
         raise HTTPException(status_code=400, detail="Invalid Google token")
     except Exception as e:
         raise HTTPException(status_code=500, detail="Internal server error")
-    '''
-    # TODO: 
+#     '''
+#     # TODO: 
 
-    Create Google Cloud Project:
+#     Create Google Cloud Project:
 
-    Create a project in the Google Cloud Console to manage your OAuth2 credentials.
-    OAuth Consent Screen:
+#     Create a project in the Google Cloud Console to manage your OAuth2 credentials.
+#     OAuth Consent Screen:
 
-    Configure the consent screen that users will see when they authorize your app.
-    OAuth2 Credentials:
+#     Configure the consent screen that users will see when they authorize your app.
+#     OAuth2 Credentials:
 
-    Create OAuth2 credentials and get your client ID and client secret.
-    FastAPI Integration:
+#     Create OAuth2 credentials and get your client ID and client secret.
+#     FastAPI Integration:
 
-    Use the google-auth and google-auth-oauthlib libraries to handle Google OAuth2.
-    The /login/google endpoint redirects users to the Google OAuth2 consent screen.
-    The /auth/google/callback endpoint handles the callback from Google, exchanges the authorization code for an ID token, and verifies it.
-    After verification, the user's email is extracted and used to either log in or register the user.
+#     Use the google-auth and google-auth-oauthlib libraries to handle Google OAuth2.
+#     The /login/google endpoint redirects users to the Google OAuth2 consent screen.
+#     The /auth/google/callback endpoint handles the callback from Google, exchanges the authorization code for an ID token, and verifies it.
+#     After verification, the user's email is extracted and used to either log in or register the user.
 
-    '''
-    # TODO: Test this auth flow with frontend before working 'add user' steps
+#     '''
+#     # TODO: Test this auth flow with frontend before working 'add user' steps

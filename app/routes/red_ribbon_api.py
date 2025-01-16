@@ -2,11 +2,8 @@ from fastapi import APIRouter, HTTPException
 from fastapi.responses import JSONResponse
 
 from app.services.red_ribbon_service import RedRibbonService
-from app import auth
 
 router = APIRouter()
-
-router.include_router(auth.router, prefix="/auth", tags=["Authentication"])
 
 @router.get("/", response_model=dict)
 def welcome():

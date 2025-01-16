@@ -2,7 +2,7 @@ from fastapi import FastAPI, Depends
 from fastapi.responses import JSONResponse
 from fastapi.middleware.cors import CORSMiddleware
 
-from app.routes import red_ribbon_api, resume_api, noodle_api, trade_scrape_api
+from app.routes import red_ribbon_api, resume_api, noodle_api
 
 app = FastAPI(
   title="Unified Backend API",
@@ -20,7 +20,6 @@ app.add_middleware(
 
 app.include_router(resume_api.router, prefix="/resume", tags=["Resume site"])
 app.include_router(noodle_api.router, prefix="/noodle", tags=["Noodle"])
-app.include_router(trade_scrape_api.router, prefix="/trades", tags=["Trade scrape"])
 app.include_router(red_ribbon_api.router, prefix="/ribbon", tags=["Red Ribbon"])
 
 @app.get("/")
@@ -30,7 +29,6 @@ async def root():
     "valid routes": {
       "/resume": "API for accessing my resume",
       "/noodle": "Noodle Backend",
-      "/trades": "API for scraping trade data for representatives in congress",
       "/ribbon": "API for accessing gift data for users"
     }
   }
